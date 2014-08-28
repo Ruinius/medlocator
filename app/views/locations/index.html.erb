@@ -1,0 +1,38 @@
+<h1>Find Nearby Doctors</h1>
+
+<%= form_tag locations_path, :method => :get do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search Patient location", :name => nil %>
+  </p>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+    <% if params[:search].present? %>
+      <th>Map</th>
+    <% end %>
+      <th>Seed Doctor Addresses</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @locations.each do |location| %>
+      <tr>
+        <% if params[:search].present? %>
+        <td><%= image_tag "http://maps.google.com/maps/api/staticmap?size=450x300&sensor=false&zoom=16&markers=#{location.latitude}%2C#{location.longitude}" %></td>
+        <% end %>
+        <td><%= location.address %></td>
+        <td><%= link_to 'Show', location %></td>
+        <td><%= link_to 'Edit', edit_location_path(location) %></td>
+        <td><%= link_to 'Destroy', location, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Doctor Location', new_location_path %>
